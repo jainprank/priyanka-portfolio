@@ -121,6 +121,17 @@ section{padding:110px 0;border-top:1px solid var(--line)}
 .hitl::before,.hitl::after{content:"";flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--warn) 0 4px,transparent 4px 8px);opacity:.5}
 .agent-info{min-height:62px;font-size:13.5px;color:#C9D4DE;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .agent-info b{color:var(--accent)}
+.rag{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rag-step{border:1px solid var(--line);background:var(--bg2);color:var(--text);font:600 12.5px var(--font-b);padding:7px 10px;border-radius:8px;cursor:pointer;transition:all .15s}
+.rag-step:hover,.rag-step[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:rgba(61,220,151,.08)}
+.rag .arr{color:var(--dim);font-size:14px}
+.wave{display:flex;align-items:center;justify-content:center;gap:5px;height:70px}
+.wave i{display:block;width:5px;height:14px;border-radius:3px;background:var(--accent);opacity:.45;transition:height .3s}
+.wave.live i{animation:wv 1s ease-in-out infinite}
+.wave.live i:nth-child(2n){animation-delay:.15s}
+.wave.live i:nth-child(3n){animation-delay:.3s}
+@keyframes wv{50%{height:56px;opacity:1}}
+.try{align-self:flex-start}
 .bars{display:grid;gap:12px}
 .bar-row{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;font-size:12.5px;color:var(--muted)}
 .bar{height:14px;background:var(--surface);border-radius:4px;overflow:hidden}
@@ -504,6 +515,75 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         </div>
       </article>
 
+      <!-- RAG comparison -->
+      <article class="case rv" data-tags="ai">
+        <div class="case-body">
+          <div class="case-meta"><span class="pill g">GenAI · RAG</span><span class="pill">OpenAI models</span><span>Personal build · 2025–now</span></div>
+          <h3>RAG comparison: which parsing and chunking wins?</h3>
+          <p class="sub">I built the same retrieval pipeline several ways and compared how parsing and chunking choices change the answers.</p>
+          <div class="tabs" role="tablist" aria-label="RAG case">
+            <button class="tab" role="tab" aria-selected="true">Problem</button>
+            <button class="tab" role="tab" aria-selected="false">Approach</button>
+          </div>
+          <div class="panel" role="tabpanel"><ul>
+            <li>Teams adopting RAG often pick a parser and chunk size by default, then blame the model when answers are wrong.</li>
+            <li>I wanted evidence for which parsing and chunking choices matter, before a client commits to one.</li>
+          </ul></div>
+          <div class="panel" role="tabpanel" hidden><ul>
+            <li>Ran the same documents through several parsing methods and chunking strategies, using OpenAI models for embedding and generation.</li>
+            <li>Compared the retrieved context and final answers side by side for each setup.</li>
+          </ul></div>
+          <div class="tags"><span>RAG</span><span>Document parsing</span><span>Chunking strategies</span><span>OpenAI</span><span>Evaluation</span></div>
+        </div>
+        <div class="case-vis">
+          <div class="vis-title">Pipeline · click a step</div>
+          <div class="rag">
+            <button class="rag-step" data-i="Parsing: converts PDFs and documents to text. I compared parsers, because tables and formulas are lost when a parser is weak.">Parse</button>
+            <span class="arr">→</span>
+            <button class="rag-step" data-i="Chunking: splits text into retrievable units. I compared fixed-size, section-aware and structure-aware chunks.">Chunk</button>
+            <span class="arr">→</span>
+            <button class="rag-step" data-i="Embedding: OpenAI embedding models turn each chunk into a vector for search.">Embed</button>
+            <span class="arr">→</span>
+            <button class="rag-step" data-i="Retrieval: fetches the top chunks for each question. Chunk choice shapes what the model can see.">Retrieve</button>
+            <span class="arr">→</span>
+            <button class="rag-step" data-i="Generation: an OpenAI model answers from the retrieved context. The same question is run against each setup.">Generate</button>
+          </div>
+          <div class="agent-info" id="ragInfo" aria-live="polite">Select a step to see what I compared.</div>
+        </div>
+      </article>
+
+      <!-- Voice agent -->
+      <article class="case rv" data-tags="ai">
+        <div class="case-body">
+          <div class="case-meta"><span class="pill g">Voice agent · Live</span><span class="pill">Vapi · OpenAI</span><span>Personal build · 2025–now</span></div>
+          <h3>Voice assistant agent on this site</h3>
+          <p class="sub">A voice agent that visitors can talk to about my work, built on an OpenAI model and running live on this page.</p>
+          <div class="tabs" role="tablist" aria-label="Voice agent case">
+            <button class="tab" role="tab" aria-selected="true">Problem</button>
+            <button class="tab" role="tab" aria-selected="false">Build</button>
+            <button class="tab" role="tab" aria-selected="false">Outcome</button>
+          </div>
+          <div class="panel" role="tabpanel"><ul>
+            <li>Recruiters and clients ask the same questions about a candidate's work, and a static page answers them poorly.</li>
+            <li>I wanted a conversational way to explore projects, with clear disclosure that it is an AI.</li>
+          </ul></div>
+          <div class="panel" role="tabpanel" hidden><ul>
+            <li>Built on Vapi for real-time voice, with an OpenAI model handling the conversation.</li>
+            <li>The assistant answers from my project and background content, and it is labelled as AI on every call.</li>
+          </ul></div>
+          <div class="panel" role="tabpanel" hidden><ul>
+            <li>Live on this page: visitors can start a voice conversation from the Ask my AI button.</li>
+          </ul></div>
+          <div class="tags"><span>Voice AI</span><span>Vapi</span><span>OpenAI</span><span>Agent design</span><span>Disclosure</span></div>
+        </div>
+        <div class="case-vis">
+          <div class="vis-title">Try it</div>
+          <div class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <button class="btn primary try" id="tryVoice" type="button">Ask my AI about the builds →</button>
+          <p class="vis-note">You are talking to an AI assistant that uses a cloned voice. It is not me.</p>
+        </div>
+      </article>
+
     </div>
   </div>
 </section>
@@ -661,6 +741,10 @@ const cred=document.getElementById('cred'),cs=document.getElementById('credState
 function verify(){cs.textContent='verifying…';cs.className='';setTimeout(()=>{cs.textContent='✓ verified on-ledger';cs.className='ok'},reduce?0:700)}
 cred.addEventListener('click',verify);cred.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();verify()}});
 
+/* rag pipeline steps */
+const ragInfo=document.getElementById('ragInfo'),ragSteps=document.querySelectorAll('.rag-step');
+ragSteps.forEach(s=>s.addEventListener('click',()=>{ragSteps.forEach(b=>b.setAttribute('aria-pressed',b===s));ragInfo.innerHTML='<b>'+s.textContent+':</b> '+s.dataset.i}));
+
 /* ecoguard stakeholder map */
 const roles=[['Registry','Issues, tracks and retires credits, with a full audit trail.'],['Methodology developer','Publishes the rules that define how credits are earned, now digitized by Flowgenix-AI.'],['VVB','Validation and verification bodies check projects against the methodology.'],['Project proponent','Registers projects and submits monitoring data to earn credits.'],['Buyer','Purchases and retires credits, with verifiable provenance.'],['Platform admin','Configures the registry, its roles and governance.']];
 const svg=document.getElementById('ecoSvg'),ns='http://www.w3.org/2000/svg',cx=200,cy=160,R=118,ecoInfo=document.getElementById('ecoInfo');
@@ -740,6 +824,9 @@ function setOpen(open) {
 }
 launch.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
 closeBtn.addEventListener('click', () => setOpen(false));
+const tryBtn = document.getElementById('tryVoice');
+const wave = document.getElementById('wave');
+tryBtn.addEventListener('click', () => setOpen(true));
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) setOpen(false); });
 
 const configured = VOICE_AGENT.live && !VOICE_AGENT.publicKey.startsWith('REPLACE') && !VOICE_AGENT.assistantId.startsWith('REPLACE');
@@ -761,9 +848,9 @@ if (configured) {
       });
     });
     stopBtn.addEventListener('click', () => vapi.stop());
-    vapi.on('call-start', () => { statusEl.textContent = 'Call in progress.'; stopBtn.disabled = false; });
-    vapi.on('call-end', () => { statusEl.textContent = 'Call ended.'; stopBtn.disabled = true; startBtn.disabled = false; });
-    vapi.on('error', () => { statusEl.textContent = 'Something went wrong. Please try again.'; stopBtn.disabled = true; startBtn.disabled = false; });
+    vapi.on('call-start', () => { statusEl.textContent = 'Call in progress.'; stopBtn.disabled = false; wave.classList.add('live'); });
+    vapi.on('call-end', () => { statusEl.textContent = 'Call ended.'; stopBtn.disabled = true; startBtn.disabled = false; wave.classList.remove('live'); });
+    vapi.on('error', () => { statusEl.textContent = 'Something went wrong. Please try again.'; stopBtn.disabled = true; startBtn.disabled = false; wave.classList.remove('live'); });
   } catch (e) {
     console.error('Voice assistant failed to load:', e);
     statusEl.textContent = 'Voice chat could not load. Check your connection or ad blocker, then reload the page.';
